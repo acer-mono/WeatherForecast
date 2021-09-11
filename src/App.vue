@@ -1,15 +1,17 @@
 <template>
   <SearchBox :options="options" :select-handler="selectHandler" />
-  <div>Some information for test</div>
+  <CheckBox description="next 5 days" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import SearchBox from "@/components/SearchBox.vue";
+import CheckBox from "@/components/CheckBox.vue";
 
 export default defineComponent({
   name: "App",
   components: {
+    CheckBox,
     SearchBox,
   },
   data() {
