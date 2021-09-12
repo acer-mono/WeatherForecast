@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div class="header">06.09</div>
+    <div class="header">{{ forecast.date }}</div>
     <img
       class="weather-label"
       src="../assets/heavy_cloud.svg"
@@ -9,21 +9,28 @@
     <div>
       <div class="measuring-box">
         <img src="../assets/temperature.svg" alt="temperature" />
-        <span>21.5 °C</span>
+        <span>{{ forecast.temperature }} °C</span>
       </div>
       <div class="measuring-box">
         <img src="../assets/humidity.svg" alt="temperature" />
-        <span>72%</span>
+        <span>{{ forecast.humidity }}%</span>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
+import { Forecast } from "@/store";
 
 export default defineComponent({
   name: "ForecastPreview",
+  props: {
+    forecast: {
+      type: Object as PropType<Forecast>,
+      required: true,
+    },
+  },
 });
 </script>
 
