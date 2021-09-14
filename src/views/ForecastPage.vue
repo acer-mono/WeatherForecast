@@ -20,18 +20,20 @@ import Forecast from "@/components/Forecast.vue";
 export default defineComponent({
   name: "ForecastPage",
   components: { Forecast, ForecastPreviewList, CheckBox, SearchBox },
-  data() {
-    return {
-      selectHandler(value: string): void {
-        console.log(value);
-      },
-    };
+  methods: {
+    selectHandler(value: string): void {
+      this.$store.dispatch('getCurrentForecast', value);
+    },
   },
   computed: {
     cities() {
       return this.$store.state.cities;
     },
   },
+
+  mounted() {
+    this.$store.dispatch('getCities');
+  }
 });
 </script>
 
