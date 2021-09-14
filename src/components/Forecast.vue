@@ -19,7 +19,7 @@
           alt="Wind speed"
           title="Wind speed"
         />
-        <span>{{ forecast.windSpeed }}}&nbsp;mph</span>
+        <span>{{ forecast.windSpeed }}&nbsp;mph</span>
       </div>
       <div class="measuring-box">
         <img
@@ -41,7 +41,7 @@
       </div>
       <div class="measuring-box">
         <img src="../assets/humidity.svg" alt="Humidity" title="Humidity" />
-        <span>{{ forecast.visibility }}%</span>
+        <span>{{ forecast.humidity }}%</span>
       </div>
       <div class="measuring-box">
         <img
@@ -49,7 +49,7 @@
           alt="Visibility"
           title="Visibility"
         />
-        <span>7.0 km</span>
+        <span>{{ forecast.visibility }}&nbsp;km</span>
       </div>
     </div>
   </div>

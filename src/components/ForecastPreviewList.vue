@@ -27,5 +27,6 @@ export default defineComponent({
 <style scoped>
 .previews {
   display: flex;
+  justify-content: space-between;
 }
 </style>

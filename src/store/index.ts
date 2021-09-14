@@ -77,6 +77,11 @@ export default createStore({
     clearForecasts(store) {
       store.forecasts = [];
     },
+
+    setCurrentForecast(store, id) {
+      store.currentForecast =
+        store.forecasts.find((el) => el.id === id) ?? null;
+    },
   },
   actions: {},
   modules: {},

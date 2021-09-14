@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main" @click="clickHandler(forecast.id)">
     <div class="header">{{ forecast.date }}</div>
     <img
       class="weather-label"
@@ -29,6 +29,11 @@ export default defineComponent({
     forecast: {
       type: Object as PropType<Forecast>,
       required: true,
+    },
+  },
+  methods: {
+    clickHandler(id: string): void {
+      this.$store.commit("setCurrentForecast", id);
     },
   },
 });
