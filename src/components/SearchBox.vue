@@ -84,6 +84,8 @@ input {
   color: #707070;
   border: 1px solid #e8e8e8;
   border-top: 0;
+  max-height: 50vh;
+  overflow-y: scroll;
 }
 .option {
   padding: 1rem 2rem;

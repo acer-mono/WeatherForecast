@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import moment from "moment";
 
 export type Forecast = {
@@ -48,19 +48,25 @@ export default createStore({
       axios
         .get("https://countriesnow.space/api/v0.1/countries/population/cities")
         .then((response) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          commit("setCities", response.data.data.map((a) => a.city));
+          commit(
+            "setCities",
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            response.data.data.map(({ city }) => city)
+          );
         });
     },
-
     getCurrentForecast: function ({ commit }, city) {
       axios
-        .get(`http://api.weatherapi.com/v1/current.json?key=aae21a8c486442cbbab45041211409&q=${city}&aqi=yes`)
+        .get(
+          `https://api.weatherapi.com/v1/current.json?key=aae21a8c486442cbbab45041211409&q=${city}&aqi=yes`
+        )
         .then((response) => {
           const currentForecast = {
             id: response.data.current.temp_c,
-            date: moment(new Date(response.data.current.last_updated)).format("D MMMM YYYY"),
+            date: moment(new Date(response.data.current.last_updated)).format(
+              "D MMMM YYYY"
+            ),
             temperature: response.data.current.temp_c,
             humidity: response.data.current.humidity,
             windSpeed: response.data.current.wind_mph,
@@ -69,21 +75,16 @@ export default createStore({
             visibility: response.data.current.vis_km,
             icon: `http:${response.data.current.condition.icon}`,
           };
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           commit("setCurrentForecast", currentForecast);
         });
     },
-
     getFiveDaysForecasts: function ({ commit }, city) {
       axios
         .get(
           `http://api.weatherapi.com/v1/forecast.json?key=aae21a8c486442cbbab45041211409&q=${city}&days=3`
         )
         .then((response) => {
-          let forecasts: PreviewForecast[];
-          // eslint-disable-next-line prefer-const
-          forecasts = [];
+          const forecasts = [] as PreviewForecast[];
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           response.data.forecast.forecastday.forEach(({ date, day }) => {
@@ -96,8 +97,6 @@ export default createStore({
             };
             forecasts.push(current);
           });
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           commit("loadForecasts", forecasts);
         });
     },

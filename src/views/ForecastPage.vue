@@ -1,9 +1,6 @@
 <template>
   <div class="header">Weather forecast</div>
-  <SearchBox
-    class="control"
-    :options="cities"
-  />
+  <SearchBox class="control" :options="cities" />
   <ForecastPreviewList class="control" />
   <Forecast class="control" v-if="$store.state.currentForecast" />
 </template>
