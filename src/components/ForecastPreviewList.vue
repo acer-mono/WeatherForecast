@@ -1,9 +1,9 @@
 <template>
   <div class="previews">
     <forecast-preview
-      v-for="(value, key) in forecasts"
+      v-for="value in forecasts"
       :forecast="value"
-      :key="key"
+      :key="value.id"
     />
   </div>
 </template>

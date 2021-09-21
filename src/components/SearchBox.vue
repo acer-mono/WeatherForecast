@@ -7,7 +7,7 @@
         @blur="isInputInFocus = false"
         v-model="searchString"
       />
-      <img src="../assets/binoculars.svg" alt="binoculars" width="50" />
+      <img src="@/assets/binoculars.svg" alt="binoculars" width="50" />
     </div>
     <div class="options" v-if="isInputInFocus && searchString">
       <div

@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <div class="box" @click="checkHandler(!isChecked)">
-      <img v-if="isChecked" src="../assets/check_mark.svg" alt="check" />
+    <div class="box" @click="checkHandler">
+      <img v-if="isChecked" src="@/assets/check_mark.svg" alt="check" />
     </div>
     <div class="description">{{ description }}</div>
   </div>
@@ -24,9 +24,9 @@ export default defineComponent({
     };
   },
   methods: {
-    checkHandler(value: boolean): void {
-      this.isChecked = value;
-      if (value) {
+    checkHandler(): void {
+      this.isChecked = !this.isChecked;
+      if (this.isChecked) {
         this.$store.commit("loadForecasts");
       } else {
         this.$store.commit("clearForecasts");

@@ -2,12 +2,12 @@
   <div class="wrapper">
     <div class="header">{{ forecast.date }}</div>
     <div class="label">
-      <img src="../assets/heavy_cloud.svg" alt="heavy cloud" />
+      <img :src="forecast.icon" alt="condition icon" />
     </div>
     <div class="measure1">
       <div class="measuring-box">
         <img
-          src="../assets/temperature.svg"
+          src="@/assets/temperature.svg"
           alt="Temperature"
           title="Temperature"
         />
@@ -15,7 +15,7 @@
       </div>
       <div class="measuring-box">
         <img
-          src="../assets/wind_speed.svg"
+          src="@/assets/wind_speed.svg"
           alt="Wind speed"
           title="Wind speed"
         />
@@ -23,7 +23,7 @@
       </div>
       <div class="measuring-box">
         <img
-          src="../assets/wind_direction.svg"
+          src="@/assets/wind_direction.svg"
           alt="Wind direction"
           title="Wind direction"
         />
@@ -33,19 +33,19 @@
     <div class="measure2">
       <div class="measuring-box">
         <img
-          src="../assets/air_pressure.svg"
+          src="@/assets/air_pressure.svg"
           alt="Air pressure"
           title="Air pressure"
         />
         <span>{{ forecast.airPressure }}&nbsp;mbar</span>
       </div>
       <div class="measuring-box">
-        <img src="../assets/humidity.svg" alt="Humidity" title="Humidity" />
+        <img src="@/assets/humidity.svg" alt="Humidity" title="Humidity" />
         <span>{{ forecast.humidity }}%</span>
       </div>
       <div class="measuring-box">
         <img
-          src="../assets/visibility.svg"
+          src="@/assets/visibility.svg"
           alt="Visibility"
           title="Visibility"
         />

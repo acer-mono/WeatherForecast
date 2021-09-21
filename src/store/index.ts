@@ -11,6 +11,7 @@ export type Forecast = {
   windDirection: number;
   airPressure: number;
   visibility: number;
+  icon: string;
 };
 
 export default createStore({
@@ -32,6 +33,7 @@ export default createStore({
             windDirection: 258.0,
             airPressure: 1008.0,
             visibility: 5,
+            icon: "none",
           },
           {
             id: "2",
@@ -42,6 +44,7 @@ export default createStore({
             windDirection: 258.0,
             airPressure: 1008.0,
             visibility: 5,
+            icon: "none",
           },
           {
             id: "3",
@@ -52,6 +55,7 @@ export default createStore({
             windDirection: 258.0,
             airPressure: 1008.0,
             visibility: 5,
+            icon: "none",
           },
           {
             id: "4",
@@ -62,6 +66,7 @@ export default createStore({
             windDirection: 258.0,
             airPressure: 1008.0,
             visibility: 5,
+            icon: "none",
           },
           {
             id: "5",
@@ -72,6 +77,7 @@ export default createStore({
             windDirection: 258.0,
             airPressure: 1008.0,
             visibility: 5,
+            icon: "none",
           },
         ]
       );
@@ -108,7 +114,6 @@ export default createStore({
       axios
         .get(`http://api.weatherapi.com/v1/current.json?key=aae21a8c486442cbbab45041211409&q=${city}&aqi=yes`)
         .then((response) => {
-          console.log(response);
           const currentForecast = {
             id: response.data.current.temp_c,
             date: moment(new Date(response.data.current.last_updated)).format("D MMMM YYYY"),
@@ -118,12 +123,29 @@ export default createStore({
             windDirection: response.data.current.wind_degree,
             airPressure: response.data.current.pressure_mb,
             visibility: response.data.current.vis_km,
+            icon: `http:${response.data.current.condition.icon}`,
           };
+          console.log(currentForecast.icon);
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-            commit("setForecast", currentForecast);
+          commit("setForecast", currentForecast);
+        });
+    },
+
+    getFiveDaysForecasts: function ({ commit }, city)  {
+      axios
+        .get(
+          `http://api.weatherapi.com/v1/current.json?key=aae21a8c486442cbbab45041211409&q=${city}&days=5`
+        )
+        .then((response) => {
+          console.log(response);
+          let forecasts: Forecast[];
+          // eslint-disable-next-line prefer-const
+          forecasts = [];
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          commit("loadForecasts", forecasts);
         });
     },
   },
-  modules: {},
 });

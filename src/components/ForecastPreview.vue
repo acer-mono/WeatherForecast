@@ -1,18 +1,14 @@
 <template>
   <div class="main" @click="clickHandler(forecast.id)">
     <div class="header">{{ forecast.date }}</div>
-    <img
-      class="weather-label"
-      src="../assets/heavy_cloud.svg"
-      alt="heavy cloud"
-    />
+    <img class="weather-label" :src="forecast.icon" alt="condition icon" />
     <div>
       <div class="measuring-box">
-        <img src="../assets/temperature.svg" alt="temperature" />
+        <img src="@/assets/temperature.svg" alt="temperature" />
         <span>{{ forecast.temperature }} °C</span>
       </div>
       <div class="measuring-box">
-        <img src="../assets/humidity.svg" alt="temperature" />
+        <img src="@/assets/humidity.svg" alt="temperature" />
         <span>{{ forecast.humidity }}%</span>
       </div>
     </div>
