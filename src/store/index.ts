@@ -25,18 +25,14 @@ export type PreviewForecast = {
 export default createStore({
   state: {
     cities: [] as string[],
-    currentCity: "",
     forecasts: [] as PreviewForecast[],
     currentForecast: null as Forecast | null,
   },
   mutations: {
-    setCurrentCity(store, currentCity) {
-      store.currentCity = currentCity;
-    },
     loadForecasts(store, forecasts) {
       store.forecasts = forecasts;
     },
-    setForecast(store, forecast) {
+    setCurrentForecast(store, forecast) {
       store.currentForecast = forecast;
     },
     setCities(store, cities: string[]): void {
@@ -45,7 +41,6 @@ export default createStore({
     reset(store): void {
       store.forecasts = [];
       store.currentForecast = null;
-      store.currentCity = "";
     },
   },
   actions: {
@@ -76,15 +71,11 @@ export default createStore({
           };
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
-          commit("setForecast", currentForecast);
-          commit("setCurrentCity", city);
+          commit("setCurrentForecast", currentForecast);
         });
     },
 
     getFiveDaysForecasts: function ({ commit }, city) {
-      if (city === "") {
-        return;
-      }
       axios
         .get(
           `http://api.weatherapi.com/v1/forecast.json?key=aae21a8c486442cbbab45041211409&q=${city}&days=3`
