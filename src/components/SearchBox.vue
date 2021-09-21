@@ -5,7 +5,7 @@
         placeholder="Type city here"
         @focus="isInputInFocus = true"
         @blur="isInputInFocus = false"
-        @keydown="this.$store.commit('reset')"
+        @keydown="$store.commit('reset')"
         v-model="searchString"
       />
       <img src="@/assets/binoculars.svg" alt="binoculars" width="50" />
