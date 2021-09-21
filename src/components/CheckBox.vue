@@ -27,7 +27,7 @@ export default defineComponent({
     checkHandler(): void {
       this.isChecked = !this.isChecked;
       if (this.isChecked) {
-        this.$store.commit("loadForecasts");
+        this.$store.dispatch("getFiveDaysForecasts", this.$store.state.currentCity);
       } else {
         this.$store.commit("clearForecasts");
       }

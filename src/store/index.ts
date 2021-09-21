@@ -14,81 +14,30 @@ export type Forecast = {
   icon: string;
 };
 
+export type PreviewForecast = {
+  id: string;
+  date: string;
+  temperature: number;
+  humidity: number;
+  icon: string;
+};
+
 export default createStore({
   state: {
-    cities: ["London", "Moscow", "Novosibirsk"] as string[],
-    forecasts: [] as Forecast[],
+    cities: [] as string[],
+    currentCity: "",
+    forecasts: [] as PreviewForecast[],
     currentForecast: null as Forecast | null,
   },
   mutations: {
-    loadForecasts(store) {
-      store.forecasts.push(
-        ...[
-          {
-            id: "1",
-            date: "06.09",
-            temperature: 27.7,
-            humidity: 13.3,
-            windSpeed: 10,
-            windDirection: 258.0,
-            airPressure: 1008.0,
-            visibility: 5,
-            icon: "none",
-          },
-          {
-            id: "2",
-            date: "07.09",
-            temperature: 21.3,
-            humidity: 14.1,
-            windSpeed: 10,
-            windDirection: 258.0,
-            airPressure: 1008.0,
-            visibility: 5,
-            icon: "none",
-          },
-          {
-            id: "3",
-            date: "08.09",
-            temperature: 13.1,
-            humidity: 10.0,
-            windSpeed: 10,
-            windDirection: 258.0,
-            airPressure: 1008.0,
-            visibility: 5,
-            icon: "none",
-          },
-          {
-            id: "4",
-            date: "09.09",
-            temperature: 7.5,
-            humidity: 12.6,
-            windSpeed: 10,
-            windDirection: 258.0,
-            airPressure: 1008.0,
-            visibility: 5,
-            icon: "none",
-          },
-          {
-            id: "5",
-            date: "10.09",
-            temperature: 21.0,
-            humidity: 11.8,
-            windSpeed: 10,
-            windDirection: 258.0,
-            airPressure: 1008.0,
-            visibility: 5,
-            icon: "none",
-          },
-        ]
-      );
+    setCurrentCity(store, currentCity) {
+      store.currentCity = currentCity;
+    },
+    loadForecasts(store, forecasts) {
+      store.forecasts = forecasts;
     },
     clearForecasts(store) {
       store.forecasts = [];
-    },
-
-    setCurrentForecast(store, id) {
-      store.currentForecast =
-        store.forecasts.find((el) => el.id === id) ?? null;
     },
 
     setForecast(store, forecast) {
@@ -129,19 +78,33 @@ export default createStore({
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           commit("setForecast", currentForecast);
+          commit("setCurrentCity", city);
         });
     },
 
-    getFiveDaysForecasts: function ({ commit }, city)  {
+    getFiveDaysForecasts: function ({ commit }, city) {
       axios
         .get(
-          `http://api.weatherapi.com/v1/current.json?key=aae21a8c486442cbbab45041211409&q=${city}&days=5`
+          `http://api.weatherapi.com/v1/forecast.json?key=aae21a8c486442cbbab45041211409&q=${city}&days=3`
         )
         .then((response) => {
           console.log(response);
-          let forecasts: Forecast[];
+          let forecasts: PreviewForecast[];
           // eslint-disable-next-line prefer-const
           forecasts = [];
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          response.data.forecast.forecastday.forEach(({ date, day }) => {
+            const current = {
+              id: date,
+              date: moment(new Date(date)).format("DD.MM"),
+              temperature: day.avgtemp_c,
+              humidity: day.avghumidity,
+              icon: `http:${day.condition.icon}`,
+            };
+            forecasts.push(current);
+          });
+          console.log(forecasts);
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           commit("loadForecasts", forecasts);
