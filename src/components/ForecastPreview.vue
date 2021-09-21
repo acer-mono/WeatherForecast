@@ -1,5 +1,5 @@
 <template>
-  <div class="main" @click="clickHandler(forecast.id)">
+  <div class="main">
     <div class="header">{{ forecast.date }}</div>
     <img class="weather-label" :src="forecast.icon" alt="condition icon" />
     <div>
@@ -27,11 +27,6 @@ export default defineComponent({
       required: true,
     },
   },
-  methods: {
-    clickHandler(id: string): void {
-      this.$store.commit("setCurrentForecast", id);
-    },
-  },
 });
 </script>
 
@@ -41,10 +36,6 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   padding: 0.5rem;
-}
-
-.main:hover {
-  background: #f6f6f6;
 }
 
 .header {

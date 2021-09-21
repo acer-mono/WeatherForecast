@@ -36,16 +36,16 @@ export default createStore({
     loadForecasts(store, forecasts) {
       store.forecasts = forecasts;
     },
-    clearForecasts(store) {
-      store.forecasts = [];
-    },
-
     setForecast(store, forecast) {
       store.currentForecast = forecast;
     },
-
     setCities(store, cities: string[]): void {
       store.cities = cities;
+    },
+    reset(store): void {
+      store.forecasts = [];
+      store.currentForecast = null;
+      store.currentCity = "";
     },
   },
   actions: {
@@ -74,7 +74,6 @@ export default createStore({
             visibility: response.data.current.vis_km,
             icon: `http:${response.data.current.condition.icon}`,
           };
-          console.log(currentForecast.icon);
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           commit("setForecast", currentForecast);
@@ -83,12 +82,14 @@ export default createStore({
     },
 
     getFiveDaysForecasts: function ({ commit }, city) {
+      if (city === "") {
+        return;
+      }
       axios
         .get(
           `http://api.weatherapi.com/v1/forecast.json?key=aae21a8c486442cbbab45041211409&q=${city}&days=3`
         )
         .then((response) => {
-          console.log(response);
           let forecasts: PreviewForecast[];
           // eslint-disable-next-line prefer-const
           forecasts = [];
@@ -104,7 +105,6 @@ export default createStore({
             };
             forecasts.push(current);
           });
-          console.log(forecasts);
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore
           commit("loadForecasts", forecasts);

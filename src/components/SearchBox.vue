@@ -5,6 +5,7 @@
         placeholder="Type city here"
         @focus="isInputInFocus = true"
         @blur="isInputInFocus = false"
+        @keydown="this.$store.commit('reset')"
         v-model="searchString"
       />
       <img src="@/assets/binoculars.svg" alt="binoculars" width="50" />
@@ -32,16 +33,19 @@ export default defineComponent({
       type: Array as () => Array<string>,
       required: true,
     },
-    selectHandler: {
-      type: Function,
-      required: true,
-    },
   },
   data() {
     return {
       searchString: "",
       isInputInFocus: false,
     };
+  },
+  methods: {
+    selectHandler(value: string): void {
+      this.$store.dispatch("getCurrentForecast", value);
+      this.$store.dispatch("getFiveDaysForecasts", value);
+      this.searchString = value;
+    },
   },
   computed: {
     getSuitableOptions(): Array<string> {
