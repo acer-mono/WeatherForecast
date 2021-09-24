@@ -78,7 +78,6 @@ export default defineComponent({
     "header header header"
     "label measure1 measure2";
   align-items: center;
-  max-width: 550px;
 }
 .header {
   grid-area: header;
@@ -113,5 +112,27 @@ export default defineComponent({
 .measuring-box img {
   width: 2rem;
   margin-right: 0.5rem;
+}
+
+@media (max-width: 1050px) {
+  .wrapper {
+    display: grid;
+    grid-gap: 1rem;
+    grid-template-rows: 2rem 10rem 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "header header"
+      "label label"
+      "measure1 measure2";
+    align-items: center;
+  }
+
+  .header {
+    text-align: center;
+  }
+
+  .label {
+    text-align: center;
+  }
 }
 </style>

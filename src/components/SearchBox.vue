@@ -101,4 +101,14 @@ input {
   color: #ffffff;
   background: #c6c6c6;
 }
+
+@media (max-width: 1050px) {
+  img {
+    display: none;
+  }
+
+  input {
+    margin-right: 0;
+  }
+}
 </style>
