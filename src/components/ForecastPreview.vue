@@ -17,13 +17,13 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { Forecast } from "@/store";
+import {Forecast, PreviewForecast} from "@/store";
 
 export default defineComponent({
   name: "ForecastPreview",
   props: {
     forecast: {
-      type: Object as PropType<Forecast>,
+      type: Object as PropType<PreviewForecast>,
       required: true,
     },
   },
