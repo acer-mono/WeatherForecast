@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import {Forecast, PreviewForecast} from "@/store";
+import { PreviewForecast } from "@/store";
 
 export default defineComponent({
   name: "ForecastPreview",
