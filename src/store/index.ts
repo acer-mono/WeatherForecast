@@ -1,24 +1,24 @@
 import { createStore } from "vuex";
-import moment from "moment";
 import api from "@/components/api";
+import {convertCurrentForecast, convertForecasts} from "@/adapters/weatherapi";
 
 export type Forecast = {
   id: string;
   date: string;
-  temperature: number;
-  humidity: number;
-  windSpeed: number;
-  windDirection: number;
-  airPressure: number;
-  visibility: number;
+  temperature: string;
+  humidity: string;
+  windSpeed: string;
+  windDirection: string;
+  airPressure: string;
+  visibility: string;
   icon: string;
 };
 
 export type PreviewForecast = {
   id: string;
   date: string;
-  temperature: number;
-  humidity: number;
+  temperature: string;
+  humidity: string;
   icon: string;
 };
 
@@ -63,36 +63,12 @@ export default createStore({
 
     getCurrentForecast: async ({ commit }, city: string) => {
       const data = await api.forecasts.current(city);
-      const currentForecast = {
-        id: data.current.temp_c,
-        date: moment(new Date(data.current.last_updated)).format("D MMMM YYYY"),
-        temperature: data.current.temp_c,
-        humidity: data.current.humidity,
-        windSpeed: data.current.wind_mph,
-        windDirection: data.current.wind_degree,
-        airPressure: data.current.pressure_mb,
-        visibility: data.current.vis_km,
-        icon: `http:${data.current.condition.icon}`,
-      };
-      commit("setCurrentForecast", currentForecast);
+      commit("setCurrentForecast", convertCurrentForecast(data));
     },
 
     getFiveDaysForecasts: async ({ commit }, city: string) => {
       const data = await api.forecasts.all(city);
-      const forecasts = [] as PreviewForecast[];
-      data.forecast.forecastday.forEach(
-        ({ date, day }: { date: string; day: any }) => {
-          const current = {
-            id: date,
-            date: moment(new Date(date)).format("DD.MM"),
-            temperature: day.avgtemp_c,
-            humidity: day.avghumidity,
-            icon: `http:${day.condition.icon}`,
-          };
-          forecasts.push(current);
-        }
-      );
-      commit("loadForecasts", forecasts);
+      commit("loadForecasts", convertForecasts(data));
     },
   },
 });
