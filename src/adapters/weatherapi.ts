@@ -1,5 +1,5 @@
 import moment from "moment";
-import { PreviewForecast } from "@/store";
+import {Forecast, PreviewForecast} from "@/store";
 
 type CurrentForecastResponse = {
   current: {
@@ -35,7 +35,7 @@ type ForecastsResponse = {
   };
 };
 
-function convertCurrentForecast(response: CurrentForecastResponse) {
+function convertCurrentForecast(response: CurrentForecastResponse): Forecast {
   return {
     id: response.current.temp_c,
     date: moment(new Date(response.current.last_updated)).format("D MMMM YYYY"),
