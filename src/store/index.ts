@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
-import axios from "axios";
 import moment from "moment";
+import api from "@/components/api";
 
 export type Forecast = {
   id: string;
@@ -22,83 +22,77 @@ export type PreviewForecast = {
   icon: string;
 };
 
+export type State = {
+  cities: string[];
+  forecasts: PreviewForecast[];
+  currentForecast: Forecast | null;
+};
+
 export default createStore({
-  state: {
-    cities: [] as string[],
-    forecasts: [] as PreviewForecast[],
-    currentForecast: null as Forecast | null,
+  state(): State {
+    return {
+      cities: [] as string[],
+      forecasts: [] as PreviewForecast[],
+      currentForecast: null as Forecast | null,
+    };
   },
+
   mutations: {
-    loadForecasts(store, forecasts) {
+    loadForecasts(store: State, forecasts: PreviewForecast[]): void {
       store.forecasts = forecasts;
     },
-    setCurrentForecast(store, forecast) {
+    setCurrentForecast(store: State, forecast: Forecast): void {
       store.currentForecast = forecast;
     },
-    setCities(store, cities: string[]): void {
+    setCities(store: State, cities: string[]): void {
       store.cities = cities;
     },
-    reset(store): void {
+    reset(store: State): void {
       store.forecasts = [];
       store.currentForecast = null;
     },
   },
   actions: {
-    getCities: function ({ commit }) {
-      axios
-        .get("https://countriesnow.space/api/v0.1/countries/population/cities")
-        .then((response) => {
-          commit(
-            "setCities",
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            response.data.data.map(({ city }) => city)
-          );
-        });
+    getCities: async ({ commit }) => {
+      const { data } = await api.cities.get();
+      commit(
+        "setCities",
+        data.map(({ city }: { city: number[] }) => city)
+      );
     },
-    getCurrentForecast: function ({ commit }, city) {
-      axios
-        .get(
-          `https://api.weatherapi.com/v1/current.json?key=aae21a8c486442cbbab45041211409&q=${city}&aqi=yes`
-        )
-        .then((response) => {
-          const currentForecast = {
-            id: response.data.current.temp_c,
-            date: moment(new Date(response.data.current.last_updated)).format(
-              "D MMMM YYYY"
-            ),
-            temperature: response.data.current.temp_c,
-            humidity: response.data.current.humidity,
-            windSpeed: response.data.current.wind_mph,
-            windDirection: response.data.current.wind_degree,
-            airPressure: response.data.current.pressure_mb,
-            visibility: response.data.current.vis_km,
-            icon: `http:${response.data.current.condition.icon}`,
+
+    getCurrentForecast: async ({ commit }, city: string) => {
+      const data = await api.forecasts.current(city);
+      const currentForecast = {
+        id: data.current.temp_c,
+        date: moment(new Date(data.current.last_updated)).format("D MMMM YYYY"),
+        temperature: data.current.temp_c,
+        humidity: data.current.humidity,
+        windSpeed: data.current.wind_mph,
+        windDirection: data.current.wind_degree,
+        airPressure: data.current.pressure_mb,
+        visibility: data.current.vis_km,
+        icon: `http:${data.current.condition.icon}`,
+      };
+      commit("setCurrentForecast", currentForecast);
+    },
+
+    getFiveDaysForecasts: async ({ commit }, city: string) => {
+      const data = await api.forecasts.all(city);
+      const forecasts = [] as PreviewForecast[];
+      data.forecast.forecastday.forEach(
+        ({ date, day }: { date: string; day: any }) => {
+          const current = {
+            id: date,
+            date: moment(new Date(date)).format("DD.MM"),
+            temperature: day.avgtemp_c,
+            humidity: day.avghumidity,
+            icon: `http:${day.condition.icon}`,
           };
-          commit("setCurrentForecast", currentForecast);
-        });
-    },
-    getFiveDaysForecasts: function ({ commit }, city) {
-      axios
-        .get(
-          `http://api.weatherapi.com/v1/forecast.json?key=aae21a8c486442cbbab45041211409&q=${city}&days=3`
-        )
-        .then((response) => {
-          const forecasts = [] as PreviewForecast[];
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          response.data.forecast.forecastday.forEach(({ date, day }) => {
-            const current = {
-              id: date,
-              date: moment(new Date(date)).format("DD.MM"),
-              temperature: day.avgtemp_c,
-              humidity: day.avghumidity,
-              icon: `http:${day.condition.icon}`,
-            };
-            forecasts.push(current);
-          });
-          commit("loadForecasts", forecasts);
-        });
+          forecasts.push(current);
+        }
+      );
+      commit("loadForecasts", forecasts);
     },
   },
 });
