@@ -1,5 +1,5 @@
 import moment from "moment";
-import {Forecast, PreviewForecast} from "@/store";
+import { Forecast, PreviewForecast } from "@/store";
 
 type CurrentForecastResponse = {
   current: {
