@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="header">{{ forecast.date }}</div>
     <div class="label">
-      <img :src="forecast.icon" alt="condition icon" />
+      <img :src="forecast.icon" :alt="forecast.icon" />
     </div>
     <div class="measure1">
       <div class="measuring-box">

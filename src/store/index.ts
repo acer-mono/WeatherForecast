@@ -1,6 +1,9 @@
 import { createStore } from "vuex";
 import api from "@/components/api";
-import {convertCurrentForecast, convertForecasts} from "@/adapters/weatherapi";
+import {
+  convertCurrentForecast,
+  convertForecasts,
+} from "@/adapters/weatherapi";
 
 export type Forecast = {
   id: string;
