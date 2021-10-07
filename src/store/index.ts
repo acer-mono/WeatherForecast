@@ -1,4 +1,4 @@
-import { createStore } from "vuex";
+import { Commit, createStore } from "vuex";
 import api from "@/components/api";
 import {
   convertCurrentForecast,
@@ -31,6 +31,42 @@ export type State = {
   currentForecast: Forecast | null;
 };
 
+export const mutations = {
+  loadForecasts(store: State, forecasts: PreviewForecast[]): void {
+    store.forecasts = forecasts;
+  },
+  setCurrentForecast(store: State, forecast: Forecast): void {
+    store.currentForecast = forecast;
+  },
+  setCities(store: State, cities: string[]): void {
+    store.cities = cities;
+  },
+  reset(store: State): void {
+    store.forecasts = [];
+    store.currentForecast = null;
+  },
+};
+
+export const actions = {
+  getCities: async ({ commit }: { commit: Commit }) => {
+    const { data } = await api.cities.get();
+    commit(
+      "setCities",
+      data.map(({ city }: { city: number[] }) => city)
+    );
+  },
+
+  getCurrentForecast: async ({ commit }: { commit: Commit }, city: string) => {
+    const data = await api.forecasts.current(city);
+    commit("setCurrentForecast", convertCurrentForecast(data));
+  },
+
+  getFiveDaysForecasts: async ({ commit }: { commit: Commit }, city: string) => {
+    const data = await api.forecasts.all(city);
+    commit("loadForecasts", convertForecasts(data));
+  },
+};
+
 export default createStore({
   state(): State {
     return {
@@ -39,39 +75,6 @@ export default createStore({
       currentForecast: null as Forecast | null,
     };
   },
-
-  mutations: {
-    loadForecasts(store: State, forecasts: PreviewForecast[]): void {
-      store.forecasts = forecasts;
-    },
-    setCurrentForecast(store: State, forecast: Forecast): void {
-      store.currentForecast = forecast;
-    },
-    setCities(store: State, cities: string[]): void {
-      store.cities = cities;
-    },
-    reset(store: State): void {
-      store.forecasts = [];
-      store.currentForecast = null;
-    },
-  },
-  actions: {
-    getCities: async ({ commit }) => {
-      const { data } = await api.cities.get();
-      commit(
-        "setCities",
-        data.map(({ city }: { city: number[] }) => city)
-      );
-    },
-
-    getCurrentForecast: async ({ commit }, city: string) => {
-      const data = await api.forecasts.current(city);
-      commit("setCurrentForecast", convertCurrentForecast(data));
-    },
-
-    getFiveDaysForecasts: async ({ commit }, city: string) => {
-      const data = await api.forecasts.all(city);
-      commit("loadForecasts", convertForecasts(data));
-    },
-  },
+  mutations,
+  actions,
 });

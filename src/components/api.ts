@@ -1,10 +1,10 @@
-const CURRENT_WEATHER_URL =
+export const CURRENT_WEATHER_URL =
   "https://api.weatherapi.com/v1/current.json?key=aae21a8c486442cbbab45041211409&aqi=yes";
-const WEATHER_FOR_THREE_DAYS_URL =
+export const WEATHER_FOR_THREE_DAYS_URL =
   "https://api.weatherapi.com/v1/forecast.json?key=aae21a8c486442cbbab45041211409&aqi=yes";
-const CITIES_URL =
+export const CITIES_URL =
   "https://countriesnow.space/api/v0.1/countries/population/cities";
-const DEFAULT_HEADERS = {
+export const DEFAULT_HEADERS = {
   "Content-Type": "application/json",
 };
 
