@@ -3,6 +3,7 @@ import { actions } from "../../src/store";
 import { createStore } from "vuex";
 import fetchMock from "jest-fetch-mock";
 import { enableFetchMocks } from "jest-fetch-mock";
+
 enableFetchMocks();
 
 const initialState = {
@@ -166,6 +167,16 @@ describe("actions", () => {
           icon: `http:${data.forecast.forecastday[0].day.condition.icon}`,
         },
       ]);
+    }
+  });
+
+  it("getFiveDaysForecasts exception was thrown", async () => {
+    {
+      global.alert = jest.fn();
+      fetchMock.mockResponse(JSON.stringify({}), { status: 100, body: "" });
+      const commit = jest.fn();
+      await actions.getFiveDaysForecasts({ commit }, "");
+      expect(global.alert).toHaveBeenCalled();
     }
   });
 });

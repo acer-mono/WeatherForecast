@@ -62,8 +62,16 @@ export const actions = {
   },
 
   getFiveDaysForecasts: async ({ commit }: { commit: Commit }, city: string) => {
-    const data = await api.forecasts.all(city);
-    commit("loadForecasts", convertForecasts(data));
+    let data;
+    await api.forecasts
+      .all(city)
+      .then((res) => {
+        data = res;
+        commit("loadForecasts", convertForecasts(data));
+      })
+      .catch(() => {
+        alert("Failed to recognize location");
+      });
   },
 };
 
