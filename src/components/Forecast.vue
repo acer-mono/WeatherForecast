@@ -62,7 +62,7 @@ export default defineComponent({
   name: "Forecast",
   computed: {
     forecast() {
-      return this.$store.state.currentForecast;
+      return this.$store.getters.currentForecast;
     },
   },
 });

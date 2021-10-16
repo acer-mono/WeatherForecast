@@ -18,7 +18,7 @@ export default defineComponent({
   components: { ForecastPreview },
   computed: {
     forecasts(): Forecast[] {
-      return this.$store.state.forecasts;
+      return this.$store.getters.forecasts;
     },
   },
 });

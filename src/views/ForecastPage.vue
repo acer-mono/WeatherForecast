@@ -16,7 +16,7 @@ export default defineComponent({
   components: { Forecast, ForecastPreviewList, SearchBox },
   computed: {
     cities() {
-      return this.$store.state.cities;
+      return this.$store.getters.cities;
     },
   },
 

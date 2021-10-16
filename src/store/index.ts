@@ -31,6 +31,18 @@ export type State = {
   currentForecast: Forecast | null;
 };
 
+export const getters = {
+  forecasts: (state: State): PreviewForecast[] => {
+    return state.forecasts;
+  },
+  currentForecast: (state: State): Forecast | null => {
+    return state.currentForecast;
+  },
+  cities: (state: State): string[] => {
+    return state.cities;
+  },
+};
+
 export const mutations = {
   loadForecasts(store: State, forecasts: PreviewForecast[]): void {
     store.forecasts = forecasts;
@@ -85,4 +97,5 @@ export default createStore({
   },
   mutations,
   actions,
+  getters,
 });
