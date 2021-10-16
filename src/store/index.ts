@@ -60,7 +60,7 @@ export const mutations = {
 };
 
 export const actions = {
-  getCities: async ({ commit }: { commit: Commit }) => {
+  getCities: async ({ commit }: { commit: Commit }): Promise<void> => {
     const { data } = await api.cities.get();
     commit(
       "setCities",
@@ -68,12 +68,18 @@ export const actions = {
     );
   },
 
-  getCurrentForecast: async ({ commit }: { commit: Commit }, city: string) => {
+  getCurrentForecast: async (
+    { commit }: { commit: Commit },
+    city: string
+  ): Promise<void> => {
     const data = await api.forecasts.current(city);
     commit("setCurrentForecast", convertCurrentForecast(data));
   },
 
-  getFiveDaysForecasts: async ({ commit }: { commit: Commit }, city: string) => {
+  getFiveDaysForecasts: async (
+    { commit }: { commit: Commit },
+    city: string
+  ): Promise<void> => {
     let data;
     await api.forecasts
       .all(city)
