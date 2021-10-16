@@ -1,5 +1,6 @@
-import { shallowMount, mount } from "@vue/test-utils";
+import { mount } from "@vue/test-utils";
 import ForecastPreviewList from "@/components/ForecastPreviewList.vue";
+import { getters } from "@/store";
 import Vuex from "vuex";
 
 describe("ForecastPreviewList.vue", () => {
@@ -24,10 +25,10 @@ describe("ForecastPreviewList.vue", () => {
     const state = {
       cities: [],
       forecasts,
-      currentForecast: {},
+      currentForecast: null,
     };
 
-    const store = new Vuex.Store({ state });
+    const store = new Vuex.Store({ state, getters });
 
     const wrapper = mount(ForecastPreviewList, {
       global: {

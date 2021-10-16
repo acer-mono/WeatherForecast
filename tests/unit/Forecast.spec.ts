@@ -1,5 +1,6 @@
 import { shallowMount } from "@vue/test-utils";
 import Forecast from "@/components/Forecast.vue";
+import { getters } from "@/store";
 import Vuex from "vuex";
 
 describe("Forecast.vue", () => {
@@ -22,7 +23,7 @@ describe("Forecast.vue", () => {
       currentForecast,
     };
 
-    const store = new Vuex.Store({ state });
+    const store = new Vuex.Store({ state, getters });
 
     const wrapper = shallowMount(Forecast, {
       global: {

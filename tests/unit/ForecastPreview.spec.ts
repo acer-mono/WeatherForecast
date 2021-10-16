@@ -5,8 +5,8 @@ describe("ForecastPreview.vue", () => {
   const forecast = {
     id: "1",
     date: "22/02/2020",
-    temperature: 10.1,
-    humidity: 11.5,
+    temperature: "10.1",
+    humidity: "11.5",
     icon: "none",
   };
   const wrapper = shallowMount(ForecastPreview, {
